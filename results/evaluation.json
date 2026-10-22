@@ -1,0 +1,115 @@
+{
+  "n_records": 5000,
+  "n_accessible": 2010,
+  "n_manual": 49,
+  "n_auto": 1961,
+  "n_auth_auto": 791,
+  "n_unauth_auto": 1170,
+  "cm_new": [
+    786,
+    5,
+    3,
+    1167
+  ],
+  "cm_old": [
+    555,
+    236,
+    170,
+    1000
+  ],
+  "new": {
+    "accuracy": 0.9959,
+    "precision": 0.9962,
+    "recall": 0.9937,
+    "f1": 0.9949
+  },
+  "old": {
+    "accuracy": 0.793,
+    "precision": 0.7655,
+    "recall": 0.7016,
+    "f1": 0.7322
+  },
+  "w_old": 236,
+  "w_new": 5,
+  "wrongful_rate_old": 29.8357,
+  "wrongful_rate_new": 0.6321,
+  "wfer": 97.8814,
+  "n_fake": 209,
+  "fraud_rate_new": 100.0,
+  "fraud_rate_old": 18.6603,
+  "n_flagged_new": 1172,
+  "manual_breakdown": {
+    "s6_holder_absent": 44,
+    "tourist_link_failed": 1,
+    "lpr_not_accepted": 4
+  },
+  "s7_multi_permit": 71,
+  "scenario_counts": {
+    "S1": 428,
+    "S2": 290,
+    "S3": 211,
+    "S4": 961,
+    "S6": 49,
+    "S7": 71
+  },
+  "time": {
+    "min": 0.582,
+    "p25": 1.0077,
+    "median": 1.232,
+    "p75": 1.5513,
+    "p95": 2.166,
+    "max": 3.513,
+    "mean": 1.3221
+  },
+  "manual_time_mean": 82.4159,
+  "lpr": {
+    "mean": 0.9425,
+    "std": 0.0296,
+    "min": 0.8024,
+    "max": 0.9921,
+    "below": 4,
+    "recaptured": 58
+  },
+  "tourist": {
+    "n": 484,
+    "disabled": 159,
+    "matched": 155,
+    "failed": 4
+  },
+  "counts": {
+    "disabled": 1539,
+    "guardians": 427,
+    "tourists": 484,
+    "authorized": 2125,
+    "accessible": 2010,
+    "auth_in_accessible": 839,
+    "unauth_in_accessible": 1171,
+    "fake_in_accessible": 209,
+    "nosticker_unauth_in_accessible": 962,
+    "violations_flagged": 1172,
+    "wrongful_old_all": 249,
+    "attributes": 36
+  },
+  "seeds": {
+    "accuracy": {
+      "mean": 99.5832,
+      "std": 0.0909
+    },
+    "precision": {
+      "mean": 99.5318,
+      "std": 0.1982
+    },
+    "recall": {
+      "mean": 99.4962,
+      "std": 0.2635
+    },
+    "f1": {
+      "mean": 99.5136,
+      "std": 0.1144
+    },
+    "wfer": {
+      "mean": 98.2893,
+      "std": 0.9173
+    }
+  }
+}

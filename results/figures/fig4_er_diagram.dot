@@ -1,0 +1,31 @@
+graph ER {
+graph [rankdir=LR, splines=ortho, nodesep=0.35, ranksep=0.45, bgcolor="white", pad=0.2];
+node [fontname="Times", fontsize=11];
+edge [color="#404040", penwidth=1.1];
+PERSON [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#DCE9F7"><TR><TD><B>PERSON</B></TD></TR><TR><TD ALIGN="LEFT">person_id (PK)</TD></TR><TR><TD ALIGN="LEFT">national_id / iqama / passport</TD></TR><TR><TD ALIGN="LEFT">person_type</TD></TR><TR><TD ALIGN="LEFT">contact_ref</TD></TR></TABLE>>];
+VEHICLE [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#DCE9F7"><TR><TD><B>VEHICLE</B></TD></TR><TR><TD ALIGN="LEFT">plate_no (PK)</TD></TR><TR><TD ALIGN="LEFT">owner_person_id (FK)</TD></TR><TR><TD ALIGN="LEFT">vehicle_type</TD></TR><TR><TD ALIGN="LEFT">model_year</TD></TR></TABLE>>];
+RENTAL_CONTRACT [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#DCE9F7"><TR><TD><B>RENTAL_CONTRACT</B></TD></TR><TR><TD ALIGN="LEFT">contract_id (PK)</TD></TR><TR><TD ALIGN="LEFT">plate_no (FK)</TD></TR><TR><TD ALIGN="LEFT">renter_person_id (FK)</TD></TR><TR><TD ALIGN="LEFT">start_time, end_time</TD></TR></TABLE>>];
+DISABILITY_PERMIT [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#E2F0D9"><TR><TD><B>DISABILITY_PERMIT</B></TD></TR><TR><TD ALIGN="LEFT">permit_id (PK)</TD></TR><TR><TD ALIGN="LEFT">beneficiary_person_id (FK)</TD></TR><TR><TD ALIGN="LEFT">guardian_person_id (FK)</TD></TR><TR><TD ALIGN="LEFT">source (APD / visa)</TD></TR><TR><TD ALIGN="LEFT">valid_from, valid_to, status</TD></TR></TABLE>>];
+PARKING_ZONE [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#FFF2CC"><TR><TD><B>PARKING_ZONE</B></TD></TR><TR><TD ALIGN="LEFT">zone_id (PK)</TD></TR><TR><TD ALIGN="LEFT">city, region</TD></TR><TR><TD ALIGN="LEFT">bay_coordinates</TD></TR><TR><TD ALIGN="LEFT">accessible_bays</TD></TR></TABLE>>];
+PARKING_EVENT [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#FFF2CC"><TR><TD><B>PARKING_EVENT</B></TD></TR><TR><TD ALIGN="LEFT">event_id (PK)</TD></TR><TR><TD ALIGN="LEFT">plate_no (FK)</TD></TR><TR><TD ALIGN="LEFT">zone_id (FK)</TD></TR><TR><TD ALIGN="LEFT">timestamp</TD></TR><TR><TD ALIGN="LEFT">lpr_confidence</TD></TR><TR><TD ALIGN="LEFT">eligibility_state</TD></TR><TR><TD ALIGN="LEFT">scenario</TD></TR></TABLE>>];
+ENFORCEMENT_ACTION [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#FCE4D6"><TR><TD><B>ENFORCEMENT_ACTION</B></TD></TR><TR><TD ALIGN="LEFT">action_id (PK)</TD></TR><TR><TD ALIGN="LEFT">event_id (FK)</TD></TR><TR><TD ALIGN="LEFT">warden_id</TD></TR><TR><TD ALIGN="LEFT">action_type</TD></TR><TR><TD ALIGN="LEFT">fine_amount</TD></TR><TR><TD ALIGN="LEFT">appeal_status</TD></TR></TABLE>>];
+AUDIT_LOG [shape=plaintext, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" BGCOLOR="#EDEDED"><TR><TD><B>AUDIT_LOG</B></TD></TR><TR><TD ALIGN="LEFT">log_id (PK)</TD></TR><TR><TD ALIGN="LEFT">event_id (FK, nullable)</TD></TR><TR><TD ALIGN="LEFT">actor_role</TD></TR><TR><TD ALIGN="LEFT">operation</TD></TR><TR><TD ALIGN="LEFT">prev_hash, entry_hash</TD></TR></TABLE>>];
+R0 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="owns\n1 : 0..N"];
+PERSON -- R0 -- VEHICLE;
+R1 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="rents\n1 : 0..N"];
+PERSON -- R1 -- RENTAL_CONTRACT;
+R2 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="rented under\n1 : 0..N"];
+VEHICLE -- R2 -- RENTAL_CONTRACT;
+R3 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="beneficiary / guardian\n1 : 0..N"];
+PERSON -- R3 -- DISABILITY_PERMIT;
+R4 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="observed in\n1 : 0..N"];
+VEHICLE -- R4 -- PARKING_EVENT;
+R5 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="located in\n1 : 0..N"];
+PARKING_ZONE -- R5 -- PARKING_EVENT;
+R6 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="matched permit\n0..N : 0..N"];
+PARKING_EVENT -- R6 -- DISABILITY_PERMIT;
+R7 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="results in\n1 : 0..1"];
+PARKING_EVENT -- R7 -- ENFORCEMENT_ACTION;
+R8 [shape=diamond, style=filled, fillcolor="#F4F4F4", color="#F4F4F4", fontsize=9, margin="0.02,0.02", label="logged in\n1 : 1..N"];
+PARKING_EVENT -- R8 -- AUDIT_LOG;
+}
